@@ -17,3 +17,46 @@
   <div class="placeholder">Ici nous allons créer nos premières publications.</div>
 </body>
 </html>
+<!-- Firebase SDK -->
+<script type="module">
+  // ضع هنا كود Firebase الذي نسخته
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+  // رمز Firebase الخاص بك
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJ3Z_KDp5_YgmXRU058UWEvjuo_1RhzKc",
+    authDomain: "may-bac-dz.firebaseapp.com",
+    projectId: "may-bac-dz",
+    storageBucket: "may-bac-dz.firebasestorage.app",
+    messagingSenderId: "873364136084",
+    appId: "1:873364136084:web:dacd7156791ac278ac5481",
+    measurementId: "G-QRX3CHFZQ0"
+  };
+
+  // تهيئة Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // مثال: إضافة منشور
+  async function addPost(text) {
+    try {
+      const docRef = await addDoc(collection(db, "posts"), { content: text });
+      console.log("Post ajouté avec ID: ", docRef.id);
+    } catch (e) {
+      console.error("Erreur: ", e);
+    }
+  }
+
+  // مثال: جلب المنشورات وعرضها
+  async function getPosts() {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data().content}`);
+    });
+  }
+
+  // مثال للاختبار
+  addPost("Bonjour, ceci est mon premier post!");
+  getPosts();
+</script>
